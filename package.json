@@ -1,6 +1,6 @@
 {
   "name": "cdk-cloudfront-to-s3",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "bin": {
     "cdk-cloudfront-to-s3": "bin/cdk-cloudfront-to-s3.js"
   },
@@ -24,6 +24,7 @@
     "@aws-cdk/aws-cloudfront": "^1.98.0",
     "@aws-cdk/aws-iam": "^1.98.0",
     "@aws-cdk/aws-s3": "^1.98.0",
+    "@aws-cdk/aws-s3-deployment": "^1.98.0",
     "@aws-cdk/aws-ssm": "^1.98.0",
     "@aws-cdk/aws-wafv2": "^1.98.0",
     "@aws-cdk/core": "^1.98.0",

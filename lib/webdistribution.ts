@@ -3,8 +3,10 @@ import { ResourceName } from './resource_name';
 import { SSMParameterReader } from './ssm_parameter_reader';
 import iam = require('@aws-cdk/aws-iam');
 import s3 = require('@aws-cdk/aws-s3');
+import s3deploy = require('@aws-cdk/aws-s3-deployment');
 import cloudfront = require('@aws-cdk/aws-cloudfront');
 import ssm = require('@aws-cdk/aws-ssm');
+const path = require('path');
 
 export interface WebDistributionStackProps extends cdk.StackProps {
   resourceName: ResourceName;
@@ -23,6 +25,12 @@ export class WebDistributionStack extends cdk.Stack {
       bucketName: bucketName,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       removalPolicy: cdk.RemovalPolicy.DESTROY
+    });
+
+    // Upload test page to s3 bucket
+    new s3deploy.BucketDeployment(this, 'deploy-website', {
+      sources: [s3deploy.Source.asset(path.join(path.dirname(__dirname), 'assets'))],
+      destinationBucket: this.bucket,
     });
 
     // Get WAF WebACL arn from ssm parameter store of the us-east-1 region
