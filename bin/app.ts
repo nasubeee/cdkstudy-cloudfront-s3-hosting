@@ -19,6 +19,7 @@ const stackEnv = {
 
 // Create web distribution stack
 new WebDistributionStack(app, '01-web-dist', {
+  stackName: resourceName.stack_name(`webdist`),
   env: stackEnv,
   resourceName: resourceName,
 });
