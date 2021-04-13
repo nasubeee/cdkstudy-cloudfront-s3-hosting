@@ -52,10 +52,10 @@ export class WafStack extends cdk.Stack {
       ],
     });
 
-    new ssm.StringParameter(this, `acl-id`, {
-      parameterName: props.resourceName.ssm_param_name(`distribution/acl/id`),
-      stringValue: this.wafAcl.attrId,
-      description: `WAF ACL Id for Cloudfront access control.`,
+    new ssm.StringParameter(this, `acl-arn`, {
+      parameterName: props.resourceName.ssm_param_name(`distribution/acl/arn`),
+      stringValue: this.wafAcl.attrArn,
+      description: `WAF ACL Arn for Cloudfront access control.`,
     });
 
   }

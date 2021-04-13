@@ -25,12 +25,12 @@ export class WebDistributionStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY
     });
 
-    // Get WAF WebACL Id from ssm parameter store of the us-east-1 region
-    const webACLIdReader = new SSMParameterReader(this, 'webAclIdReader', {
-      parameterName: props.resourceName.ssm_param_name(`distribution/acl/id`),
+    // Get WAF WebACL arn from ssm parameter store of the us-east-1 region
+    const webACLArnReader = new SSMParameterReader(this, 'webAclArnReader', {
+      parameterName: props.resourceName.ssm_param_name(`distribution/acl/arn`),
       region: "us-east-1",
     });
-    const webAclId: string = webACLIdReader.getParameterValue();
+    const webAclArn: string = webACLArnReader.getParameterValue();
 
     // Create Cloudfront OriginAccessIdentity
     const oai = new cloudfront.OriginAccessIdentity(this, "cloudfront-oai");
@@ -51,7 +51,7 @@ export class WebDistributionStack extends cdk.Stack {
     // Create cloudfront web distribution
     this.distribution = new cloudfront.CloudFrontWebDistribution(
       this, "website-distribution", {
-      // webACLId: webAclId,
+      webACLId: webAclArn,
       viewerCertificate: {
         aliases: [],
         props: {
