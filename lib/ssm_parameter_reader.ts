@@ -2,7 +2,6 @@ import { Construct } from '@aws-cdk/core';
 import { AwsCustomResource, AwsSdkCall } from '@aws-cdk/custom-resources';
 import iam = require("@aws-cdk/aws-iam");
 
-// https://stackoverflow.com/questions/59774627/cloudformation-cross-region-reference
 interface SSMParameterReaderProps {
     parameterName: string;
     region: string;
