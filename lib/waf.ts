@@ -27,7 +27,7 @@ export class WafStack extends cdk.Stack {
 
     this.wafAcl = new wafv2.CfnWebACL(this, "waf-acl", {
       defaultAction: { block: {} },
-      name: `ip-restriction`,
+      name: `ipRestriction`,
       description: `allow cloudfront access from specific ip only.`,
       scope: "CLOUDFRONT",
       visibilityConfig: {
@@ -59,10 +59,10 @@ export class WafStack extends cdk.Stack {
       region: props.webDistributionRegion as string,
     });
     const distributionArn: string = distributionArnReader.getParameterValue();
-    const webAclArn: string = `arn:aws:wafv2:${this.region}:${this.account}:global/webacl/eval/${this.wafAcl.name}`;
+    // const wafAclArn: string = `arn:aws:wafv2:us-east-1:084632214993:global/webacl/ipRestriction/3cd22688-71fa-4cee-becf-498509281d19`;
     this.wafAssociation = new wafv2.CfnWebACLAssociation(this, 'WebAclAssociation', {
       resourceArn: distributionArn,
-      webAclArn: webAclArn,
+      webAclArn: this.wafAcl.attrArn,
     });
   }
 }
