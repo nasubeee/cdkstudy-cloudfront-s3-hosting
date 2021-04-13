@@ -20,6 +20,7 @@ const stackEnv = {
 // Create web distribution stack
 new WebDistributionStack(app, '01-web-dist', {
   stackName: resourceName.stack_name(`webdist`),
+  description: `CloudFront to S3 Test Stack 01 - S3 bucket + Cloudfront distribution.`
   env: stackEnv,
   resourceName: resourceName,
 });
