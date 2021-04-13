@@ -1,17 +1,15 @@
 import * as cdk from '@aws-cdk/core';
 import { ResourceName } from './resource_name';
-import { SSMParameterReader } from './ssm_parameter_reader';
+import ssm = require('@aws-cdk/aws-ssm');
 import wafv2 = require('@aws-cdk/aws-wafv2');
 
 export interface WafStackProps extends cdk.StackProps {
   resourceName: ResourceName;
   allowedIps: string[];
-  webDistributionRegion: string;
 }
 export class WafStack extends cdk.Stack {
   wafIpSet: wafv2.CfnIPSet;
   wafAcl: wafv2.CfnWebACL;
-  wafAssociation: wafv2.CfnWebACLAssociation;
 
   constructor(scope: cdk.Construct, id: string, props: WafStackProps) {
     super(scope, id, props);
@@ -54,14 +52,11 @@ export class WafStack extends cdk.Stack {
       ],
     });
 
-    const distributionArnReader = new SSMParameterReader(this, 'distributionArnReader', {
-      parameterName: props.resourceName.ssm_param_name(`distribution/arn`),
-      region: props.webDistributionRegion as string,
+    new ssm.StringParameter(this, `acl-arn`, {
+      parameterName: props.resourceName.ssm_param_name(`distribution/acl/arn`),
+      stringValue: this.wafAcl.attrArn,
+      description: `WAF ACL Arn for Cloudfront access control.`,
     });
-    const distributionArn: string = distributionArnReader.getParameterValue();
-    this.wafAssociation = new wafv2.CfnWebACLAssociation(this, 'WebAclAssociation', {
-      resourceArn: distributionArn,
-      webAclArn: this.wafAcl.attrArn,
-    });
+
   }
 }

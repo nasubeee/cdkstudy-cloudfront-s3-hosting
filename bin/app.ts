@@ -20,23 +20,23 @@ const stackEnv = {
   region: process.env.CDK_DEFAULT_REGION
 };
 
-// Create web distribution stack
-new WebDistributionStack(app, '01-web-dist', {
-  stackName: resourceName.stack_name(`webdist`),
-  description: `CloudFront to S3 Test Stack 01 - S3 bucket + Cloudfront distribution.`,
-  env: stackEnv,
-  resourceName: resourceName,
-});
-
 // Create waf stack to us-east-1 region
-new WafStack(app, '02-waf', {
+const wafStack = new WafStack(app, '01-waf', {
   stackName: resourceName.stack_name(`waf`),
-  description: `CloudFront to S3 Test Stack 02 - WAF`,
+  description: `CloudFront to S3 Test Stack 01 - WAF`,
   env: {
     account: stackEnv.account,
     region: "us-east-1",
   },
   resourceName: resourceName,
   allowedIps: allowedIps,
-  webDistributionRegion: stackEnv.region as string,
 });
+
+// Create web distribution stack
+const webDistStack = new WebDistributionStack(app, '02-web-dist', {
+  stackName: resourceName.stack_name(`webdist`),
+  description: `CloudFront to S3 Test Stack 02 - S3 bucket + Cloudfront distribution.`,
+  env: stackEnv,
+  resourceName: resourceName,
+});
+webDistStack.addDependency(wafStack, `CloudFront distribution reqiures WebACL arn.`)

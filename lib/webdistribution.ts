@@ -1,5 +1,6 @@
 import * as cdk from '@aws-cdk/core';
 import { ResourceName } from './resource_name';
+import { SSMParameterReader } from './ssm_parameter_reader';
 import iam = require('@aws-cdk/aws-iam');
 import s3 = require('@aws-cdk/aws-s3');
 import cloudfront = require('@aws-cdk/aws-cloudfront');
@@ -24,6 +25,13 @@ export class WebDistributionStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY
     });
 
+    // Get WAF WebACL arn from ssm parameter store of the us-east-1 region
+    const webACLArnReader = new SSMParameterReader(this, 'webAclArnReader', {
+      parameterName: props.resourceName.ssm_param_name(`distribution/acl/arn`),
+      region: "us-east-1",
+    });
+    const webAclArn: string = webACLArnReader.getParameterValue();
+
     // Create Cloudfront OriginAccessIdentity
     const oai = new cloudfront.OriginAccessIdentity(this, "cloudfront-oai");
 
@@ -43,6 +51,7 @@ export class WebDistributionStack extends cdk.Stack {
     // Create cloudfront web distribution
     this.distribution = new cloudfront.CloudFrontWebDistribution(
       this, "website-distribution", {
+      webACLId: webAclArn,
       viewerCertificate: {
         aliases: [],
         props: {
@@ -81,13 +90,6 @@ export class WebDistributionStack extends cdk.Stack {
           errorCachingMinTtl: 0,
         },
       ],
-    });
-
-    // Register cloudfront web distribution to ssm parameter store
-    this.distributionArn = new ssm.StringParameter(this, `dist-arn`, {
-      parameterName: props.resourceName.ssm_param_name(`distribution/arn`),
-      stringValue: `arn:aws:cloudfront::${this.account}:distribution/${this.distribution.distributionId}`,
-      description: `CloudFront site distribtuion arn`,
     });
   }
 }

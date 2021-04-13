@@ -26,3 +26,5 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 - [【小ネタ】AWS WAF v2 の WebACL （CloudFront用）を東京リージョンから CloudFormation で作成しようとしたら怒られた](https://dev.classmethod.jp/articles/cloudformation-webacl-cloudfront-error/)
 
 - [AWS WAF v1 と v2 それぞれで WebACL を CloudFormation で作成したときにハマった話](https://michimani.net/post/aws-create-web-acl-at-waf-v1-v2/)
+
+- [TerraformでCloudFrontにACL(AWS WAF)を定義するときのエラー対処方法](https://qiita.com/yuu999/items/e5e233e02be0ed1d2365)
