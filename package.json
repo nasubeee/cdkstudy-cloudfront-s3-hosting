@@ -1,6 +1,6 @@
 {
   "name": "cdk-cloudfront-to-s3",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "bin": {
     "cdk-cloudfront-to-s3": "bin/cdk-cloudfront-to-s3.js"
   },
