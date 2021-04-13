@@ -84,10 +84,14 @@ export class WebDistributionStack extends cdk.Stack {
     });
 
     // Register cloudfront web distribution to ssm parameter store
-    this.distributionArn = new ssm.StringParameter(this, `dist-arn`, {
-      parameterName: props.resourceName.ssm_param_name(`distribution/arn`),
-      stringValue: `arn:aws:cloudfront::${this.account}:distribution/${this.distribution.distributionId}`,
-      description: `CloudFront site distribtuion arn`,
-    });
+    // const distributionArnReader = new SSMParameterReader(this, 'distributionArnReader', {
+    //   parameterName: props.resourceName.ssm_param_name(`distribution/arn`),
+    //   region: props.webDistributionRegion as string,
+    // });
+    // const distributionArn: string = distributionArnReader.getParameterValue();
+    // this.wafAssociation = new wafv2.CfnWebACLAssociation(this, 'WebAclAssociation', {
+    //   resourceArn: distributionArn,
+    //   webAclArn: this.wafAcl.attrArn,
+    // });
   }
 }
