@@ -1,10 +1,33 @@
-# S3 + CloudFront + WAF 
+# S3 + CloudFront + WAFv2 サンプル
+
+「CloudFront経由でS3にアクセスする + WAFv2でアクセス制限をかける」
+
+リソース一式をdeployするCDK projectのサンプルです．
 
 ## Overview
 
-## 01-waf stack
+### 01-waf stack
 
-## 02-web-dist stack
+WAFv2 WebACLを管理するスタックです．
+
+[CloudFormation - WAFv2 - Scope](https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-resource-wafv2-webacl.html#aws-resource-wafv2-webacl-properties)に書かれているように，WAFv2のACLをCloudFrontに関連付けたい場合，US East (N. Virginia) Region (us-east-1)へWAFv2リソースを作成する必要があります．
+
+そこで，[app.ts](./bin/app.ts)で明示的にリージョンを指定しています．
+
+```ts
+const wafStack = new WafStack(app, '01-waf', {
+  // (省略)
+  env: {
+    account: stackEnv.account,
+    region: "us-east-1",
+  },
+  // (省略)
+});
+```
+
+実装当初，この制限に気づかず，deployエラーでハマりました．(WAFv1の場合，リージョン制限は無いようです．)
+
+### 02-web-dist stack
 
 
 ## Reference
