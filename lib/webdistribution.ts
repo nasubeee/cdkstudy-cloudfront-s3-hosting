@@ -21,7 +21,7 @@ export class WebDistributionStack extends cdk.Stack {
     this.bucket = new s3.Bucket(this, `host-bucket`, {
       bucketName: bucketName,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-      removalPolicy: cdk.RemovalPolicy.RETAIN
+      removalPolicy: cdk.RemovalPolicy.DESTROY
     });
 
     // Create Cloudfront OriginAccessIdentity
