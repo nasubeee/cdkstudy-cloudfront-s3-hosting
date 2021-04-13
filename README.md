@@ -17,8 +17,7 @@ deployする方法と,実装でハマったポイントをまとめました．
 
 WAFv2 WebACLを管理するスタックです．
 
-[CloudFormation - WAFv2 - Scope](https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-resource-wafv2-webacl.html#aws-resource-wafv2-webacl-properties)に書かれているように，WAFv2のACLをCloudFrontに関連付けたい場合，US East (N. Virginia) Region (us-east-1)へWAFv2リソースを作成する必要があります．
-そこで，[app.ts](./bin/app.ts)で明示的にリージョンを指定しています．
+[CloudFormation - WAFv2 - Scope](https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-resource-wafv2-webacl.html#aws-resource-wafv2-webacl-properties)に書かれているように，WAFv2のACLをCloudFrontに関連付けたい場合，US East (N. Virginia) Region (us-east-1)へWAFv2リソースを作成する必要があります．そこで，[app.ts](./bin/app.ts)で明示的にリージョンを指定しています．
 
 ```ts
 const wafStack = new WafStack(app, '01-waf', {
@@ -70,7 +69,6 @@ cross-regionの参照は通常の方法では不可能なため，今回は，[�
    
    `@aws-cdl/aws-wafv2`モジュールに[CfnWebACLAssociation](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-wafv2.CfnWebACLAssociation.html)というクラスがあり，
    最初，これを使えばよいかと思ったのですが，
-   
    こちらで関連付けできるのは，`API Gateway REST API等，CloudFront distribution以外`の場合でした．
 
    CloudFrontと関連付ける場合は，[CloudFrontWebDistribution側](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudfront.CloudFrontWebDistribution.html)で，WebACLを指定する必要があります．
