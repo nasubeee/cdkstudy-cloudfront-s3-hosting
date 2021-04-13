@@ -59,7 +59,6 @@ export class WafStack extends cdk.Stack {
       region: props.webDistributionRegion as string,
     });
     const distributionArn: string = distributionArnReader.getParameterValue();
-    // const wafAclArn: string = `arn:aws:wafv2:us-east-1:084632214993:global/webacl/ipRestriction/3cd22688-71fa-4cee-becf-498509281d19`;
     this.wafAssociation = new wafv2.CfnWebACLAssociation(this, 'WebAclAssociation', {
       resourceArn: distributionArn,
       webAclArn: this.wafAcl.attrArn,
