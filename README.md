@@ -1,12 +1,19 @@
 # S3 + CloudFront + WAFv2 をCDKで構築するサンプル
 
-「CloudFront経由でS3にアクセスする + WAFv2でアクセス制限をかける」
+「CloudFront経由でS3にアクセスする + WAFv2でアクセス制限をかける」リソース一式を構築するAWS CDKのサンプルです．
 
-リソース一式を構築するAWS CDKのサンプルです．
+- WAFv2リソースは`us-east-1`リージョンに
+- その他のリソースは`ap-northeast-1`リージョンに
+
+deployする方法と,実装でハマったポイントをまとめました．
+
+## CDK Version
+
+2021.04.13時点での最新バージョンである，1.98.0を使用しました．
 
 ## Overview
 
-### 01-waf stack
+## 01-waf stack
 
 WAFv2 WebACLを管理するスタックです．
 
@@ -31,12 +38,12 @@ const wafStack = new WafStack(app, '01-waf', {
 ここでは，SSM Parameter StoreにWebACL ARNを格納しました（これを参照する方法は後述）．
 
 
-### 02-web-dist stack
+## 02-web-dist stack
 
 - コンテンツを格納するS3バケット
 - S3バケットを向き先としたCloudFront distribution
 
-を管理するスタックです．今回はを東京リージョンに作成しました（技術検証のため，01-waf スタックと別リージョンにしています）．
+を管理するスタックです．技術検証のため，01-waf スタックと別リージョンにしています．
 
 S3バケット，CloudFront web distributionを定義し，先に作成したWAFv2 ACLと関連付けていくのですが，
 
@@ -61,7 +68,24 @@ cross-regionの参照は通常の方法では不可能なため，今回は，[�
 
 3. CDKでCloudFrontへのWAF WebACLの関連付ける方法
    
-   `@aws-cdl/aws-wafv2`モジュールに``という
+   `@aws-cdl/aws-wafv2`モジュールに[CfnWebACLAssociation](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-wafv2.CfnWebACLAssociation.html)というクラスがあり，
+   最初，これを使えばよいかと思ったのですが，
+   
+   こちらで関連付けできるのは，`API Gateway REST API等，CloudFront distribution以外`の場合でした．
+
+   CloudFrontと関連付ける場合は，[CloudFrontWebDistribution側](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudfront.CloudFrontWebDistribution.html)で，WebACLを指定する必要があります．
+
+   ```ts
+    this.distribution = new cloudfront.CloudFrontWebDistribution(
+      this, "website-distribution",
+      {
+        webACLId: webAclArn,
+        // 以下省略
+      }
+    );
+   ```
+  
+  webACLのプロパティ名はwebACLIdとなっていますが，WAFv2を使う場合`WebACLのARNを指定`する点にも注意してください．
 ## Reference
 
 本スタック実装にあたり参考にさせていただいたサイトを，トピック別に掲載しました．
