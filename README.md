@@ -21,4 +21,8 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
 - [AWS WAFv2をCDKで構築してみた](https://dev.classmethod.jp/articles/aws-cdk-create-wafv2/)
 
-- [AWS WAFを完全に理解する ~WAFの基礎からv2の変更点まで~](https://dev.classmethod.jp/articles/fully-understood-aws-waf-v2/)
+- [AWS WAFを完全に理解する - WAFの基礎からv2の変更点まで -](https://dev.classmethod.jp/articles/fully-understood-aws-waf-v2/)
+
+- [【小ネタ】AWS WAF v2 の WebACL （CloudFront用）を東京リージョンから CloudFormation で作成しようとしたら怒られた](https://dev.classmethod.jp/articles/cloudformation-webacl-cloudfront-error/)
+
+- [AWS WAF v1 と v2 それぞれで WebACL を CloudFormation で作成したときにハマった話](https://michimani.net/post/aws-create-web-acl-at-waf-v1-v2/)
