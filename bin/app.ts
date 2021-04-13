@@ -39,4 +39,4 @@ const webDistStack = new WebDistributionStack(app, '02-web-dist', {
   env: stackEnv,
   resourceName: resourceName,
 });
-webDistStack.addDependency(wafStack, `CloudFront distribution reqiures WebACL arn.`)
+webDistStack.addDependency(wafStack, `CloudFront distribution reqiures WebACL arn.`);
