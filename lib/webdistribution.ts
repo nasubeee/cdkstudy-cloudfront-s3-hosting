@@ -25,6 +25,13 @@ export class WebDistributionStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY
     });
 
+    // Get WAF WebACL ARN from ssm parameter store of the us-east-1 region
+    const webACLArnReader = new SSMParameterReader(this, 'webAclArnReader', {
+      parameterName: props.resourceName.ssm_param_name(`distribution/acl/arn`),
+      region: "us-east-1",
+    });
+    const webAclArn: string = webACLArnReader.getParameterValue();
+
     // Create Cloudfront OriginAccessIdentity
     const oai = new cloudfront.OriginAccessIdentity(this, "cloudfront-oai");
 
@@ -83,16 +90,5 @@ export class WebDistributionStack extends cdk.Stack {
         },
       ],
     });
-
-    // Get WAF WebACL ARN from ssm parameter store of the us-east-1 region
-    // const distributionArnReader = new SSMParameterReader(this, 'distributionArnReader', {
-    //   parameterName: props.resourceName.ssm_param_name(`distribution/arn`),
-    //   region: props.webDistributionRegion as string,
-    // });
-    // const distributionArn: string = distributionArnReader.getParameterValue();
-    // this.wafAssociation = new wafv2.CfnWebACLAssociation(this, 'WebAclAssociation', {
-    //   resourceArn: distributionArn,
-    //   webAclArn: this.wafAcl.attrArn,
-    // });
   }
 }
