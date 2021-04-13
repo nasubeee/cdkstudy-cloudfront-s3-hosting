@@ -59,10 +59,10 @@ export class WafStack extends cdk.Stack {
       region: props.webDistributionRegion as string,
     });
     const distributionArn: string = distributionArnReader.getParameterValue();
-    // const webAclArn: string = `arn:aws:wafv2:${this.region}:${this.account}:global/webacl/eval/${this.wafAcl.name}`;
+    const webAclArn: string = `arn:aws:wafv2:${this.region}:${this.account}:global/webacl/eval/${this.wafAcl.name}`;
     this.wafAssociation = new wafv2.CfnWebACLAssociation(this, 'WebAclAssociation', {
       resourceArn: distributionArn,
-      webAclArn: this.wafAcl.attrArn
+      webAclArn: webAclArn,
     });
   }
 }
