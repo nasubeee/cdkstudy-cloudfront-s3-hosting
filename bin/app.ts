@@ -11,7 +11,7 @@ const app = new cdk.App();
 // Get Context
 const systemName = app.node.tryGetContext("system_name");
 const systemEnv = app.node.tryGetContext("env");
-const allowedIps = app.node.tryGetContext("allowd_ips");
+const allowedIps = app.node.tryGetContext("allowed_ips");
 const resourceName = new ResourceName(systemName, systemEnv);
 
 // Define stack env
