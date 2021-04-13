@@ -1,6 +1,5 @@
 import * as cdk from '@aws-cdk/core';
 import { ResourceName } from './resource_name';
-// import { SSMParameterReader } from './ssm_parameter_reader';
 import ssm = require('@aws-cdk/aws-ssm');
 import wafv2 = require('@aws-cdk/aws-wafv2');
 

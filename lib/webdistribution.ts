@@ -1,5 +1,6 @@
 import * as cdk from '@aws-cdk/core';
 import { ResourceName } from './resource_name';
+import { SSMParameterReader } from './ssm_parameter_reader';
 import iam = require('@aws-cdk/aws-iam');
 import s3 = require('@aws-cdk/aws-s3');
 import cloudfront = require('@aws-cdk/aws-cloudfront');
@@ -83,7 +84,7 @@ export class WebDistributionStack extends cdk.Stack {
       ],
     });
 
-    // Register cloudfront web distribution to ssm parameter store
+    // Get WAF WebACL ARN from ssm parameter store of the us-east-1 region
     // const distributionArnReader = new SSMParameterReader(this, 'distributionArnReader', {
     //   parameterName: props.resourceName.ssm_param_name(`distribution/arn`),
     //   region: props.webDistributionRegion as string,
