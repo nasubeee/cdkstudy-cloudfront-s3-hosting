@@ -87,13 +87,13 @@ export class WebDistributionStack extends cdk.Stack {
       errorConfigurations: [
         {
           errorCode: 403,
-          responsePagePath: "/index.html",
+          responsePagePath: "/error.html",
           responseCode: 200,
           errorCachingMinTtl: 0,
         },
         {
           errorCode: 404,
-          responsePagePath: "/index.html",
+          responsePagePath: "/error.html",
           responseCode: 200,
           errorCachingMinTtl: 0,
         },
